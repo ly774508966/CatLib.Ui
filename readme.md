@@ -43,7 +43,9 @@ Ui元素由UiFactory产出，目前版本提供了简单的实现 `SimpleUiFacto
 
 ### 遮罩
 对于用户IO操作，需要进行遮罩，当操作完成后，取消。接口如下：
+
 `void ShowMask(string maskName);`
+
 `void HideMask();`
 
 ## 项目结构

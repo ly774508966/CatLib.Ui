@@ -17,7 +17,7 @@ namespace CatLib.Ui
 
         public void Init()
         {
-            App.Trigger("catlib.ui.layer.inited");
+
         }
 
         public void Register()
@@ -52,7 +52,6 @@ namespace CatLib.Ui
                 go.transform.SetParent(UIContainer);
                 rect.SetFullStretch();
             }
-            Debug.LogError("set layer:"+layerName);
             LayerDictionary.Add(layerName, index);
 
             // 把layerName排序后，再把Transform排序

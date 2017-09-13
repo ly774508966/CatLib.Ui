@@ -12,7 +12,6 @@ namespace CatLib.Ui
 
         public void Init()
         {
-            App.Trigger("catlib.ui.ui_factory.inited");
         }
 
         public void Register()

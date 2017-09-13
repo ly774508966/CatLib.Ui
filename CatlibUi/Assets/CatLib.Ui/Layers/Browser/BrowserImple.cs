@@ -1,4 +1,5 @@
-﻿using CatLib.API.Debugger;
+﻿using System;
+using CatLib.API.Debugger;
 
 namespace CatLib.Ui
 {
@@ -13,10 +14,12 @@ namespace CatLib.Ui
 
         public IPage PreviousPage { get; private set; }
 
+        private Action<IPage> _onPageEnterHandler;
+        private Action<IPage> _onPageExitHandler;
+
         public void Init()
         {
             App.Make<ILayer>().SetLayer(LayerName,LayerIndex);
-            App.Trigger("catlib.ui.browser.inited");
         }
 
         public void Register()
@@ -32,7 +35,7 @@ namespace CatLib.Ui
             {
                 PreviousPage = CurrentPage;
                 PreviousPage.Exit();
-                App.Trigger("catlib.ui.browser.exit", page);
+                if(_onPageExitHandler!=null) _onPageExitHandler.Invoke(PreviousPage);
                 App.Make<ILogger>().Debug("exit page:"+pageName);
             }
 
@@ -41,7 +44,7 @@ namespace CatLib.Ui
             page.RectTransform.SetParent(layer);
             page.RectTransform.SetFullStretch();
             page.Enter();
-            App.Trigger("catlib.ui.browser.enter", page);
+            if(_onPageEnterHandler!=null) _onPageEnterHandler.Invoke(page);
             App.Make<ILogger>().Debug("enter page:"+pageName);
             return page;
         }
@@ -54,6 +57,16 @@ namespace CatLib.Ui
             return true;
         }
 
+        public void RegisterOnPageEnterHandler(Action<IPage> handler)
+        {
+            _onPageEnterHandler += handler;
+        }
+
+        public void RegisterOnPageExitHandler(Action<IPage> handler)
+        {
+            _onPageExitHandler += handler;
+        }
+
         private IPage _getPage(string pageName)
         {
             var ui = UiFactory.Instance.GetUi(UiType.Browser, pageName);
@@ -61,8 +74,6 @@ namespace CatLib.Ui
             Assert.IsNotNull(page,"page not found:"+page);
             return page;
         }
-
-
 
     }
 }

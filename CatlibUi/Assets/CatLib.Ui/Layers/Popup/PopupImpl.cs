@@ -28,7 +28,6 @@ namespace CatLib.Ui
         {
             Layer.Instance.SetLayer(LayerName,LayerIndex);
             _setMask();
-            App.Trigger("catlib.ui.popup.inited");
         }
 
         public void Register()

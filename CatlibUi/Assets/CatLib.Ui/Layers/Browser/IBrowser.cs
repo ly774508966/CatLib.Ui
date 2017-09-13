@@ -1,4 +1,6 @@
-﻿namespace CatLib.Ui
+﻿using System;
+
+namespace CatLib.Ui
 {
     public interface IBrowser
     {
@@ -16,5 +18,9 @@
         IPage EnterPage(string pageName);
 
         bool CanEnterPage(string pageName);
+
+        void RegisterOnPageEnterHandler(Action<IPage> handler);
+
+        void RegisterOnPageExitHandler(Action<IPage> handler);
     }
 }

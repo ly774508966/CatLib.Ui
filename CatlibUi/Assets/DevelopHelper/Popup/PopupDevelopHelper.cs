@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace DevelopHelper.Popup
 {
-    [Priority(100000000)]
     public class PopupDevelopHelper:MonoBehaviour,IServiceProvider
     {
         protected const string ResPath = "DevelopHelper/Popup/";
@@ -18,22 +17,16 @@ namespace DevelopHelper.Popup
             uiTr.gameObject.SetActive(false);
         }
 
-        [Priority(0)]
         public void Init()
         {
-            App.On("catlib.ui.ui_factory.inited", (x) =>
-            {
-                _addUi("inform");
-                _addUi("confirm");
-                _addUi("warning");
-                _addUi("error");
-            });
+            _addUi("inform");
+            _addUi("confirm");
+            _addUi("warning");
+            _addUi("error");
         }
 
         public void Register()
         {
-            App.Singleton<PopupDevelopHelper>((_, __) => this);
-
         }
     }
 }

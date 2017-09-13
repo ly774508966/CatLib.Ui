@@ -26,7 +26,6 @@ namespace CatLib.Ui
         {
             App.Make<ILayer>().SetLayer(LayerName, LayerIndex);
             DefaultMask = _getDefaultMask(DefaultMaskColor);
-            App.Trigger("catlib.ui.mask.inited");
         }
 
         public void Register()

@@ -21,8 +21,7 @@ namespace CatLib.Ui
         public void Init()
         {
             App.Make<ILayer>().SetLayer(LayerName,LayerIndex);
-            App.On("catlib.ui.browser.enter", _onEnterPage);
-            App.Trigger("catlib.ui.background.inited");
+            App.Make<IBrowser>().RegisterOnPageEnterHandler(_onEnterPage);
         }
 
         public void Register()
@@ -30,10 +29,8 @@ namespace CatLib.Ui
             App.Singleton<IBackground>((_, __) => this);
         }
 
-        private void _onEnterPage(object obj)
+        private void _onEnterPage(IPage page)
         {
-            var page = obj as IPage;
-            Assert.IsNotNull(obj);
             var bgConfig = Configs.FirstOrDefault(x => x.TriggerPageName == page.PageName);
             if (bgConfig == null)
             {

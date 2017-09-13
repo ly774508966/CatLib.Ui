@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CatLib.Ui
 {
@@ -7,6 +8,7 @@ namespace CatLib.Ui
       
         public Button ConfirmTrueButton;
         public Button ConfirmFalseButton;
+        public Button[] SelectionButtons;
         public Text TitleText;
         public Text BodyText;
 
@@ -20,6 +22,15 @@ namespace CatLib.Ui
             {
                 ReportConfirm(false);
             });
+
+            foreach (var selectionButton in SelectionButtons)
+            {
+                var tmp = selectionButton;  
+                selectionButton.onClick.AddListener(() =>
+                {
+                    ReportSelect(tmp);
+                });
+            }
         }
 
         public override void SetWindowTitle(string messageTitle)

@@ -63,7 +63,7 @@ namespace CatLib.Ui
 
         private void _onWindowSelect(object selectResult, Action<object> onSelectHandler)
         {
-            Assert.IsNotNull(onSelectHandler);
+            Assert.IsNotNull(onSelectHandler,"can't find select handler");
             _closeWindow();
             onSelectHandler.Invoke(selectResult);
 

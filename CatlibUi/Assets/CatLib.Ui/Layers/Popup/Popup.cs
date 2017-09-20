@@ -14,28 +14,28 @@ namespace CatLib.Ui
         {
             App.Make<IPopup>().GetType();
             Assert.IsNotNull(Instance,"do not have popup instance");
-            Instance.PopupWindow(InformName, messageTitle, messageBody, onConfirmHandler);
+            Instance.PopupWindow(InformName, messageTitle, messageBody,true, onConfirmHandler);
         }
 
         public static void Confirm(string messageTitle, object messageBody,
             Action<bool> onConfirmHandler)
         {
             Assert.IsNotNull(Instance,"do not have popup instance");
-            Instance.PopupWindow(ConfirmName, messageTitle,messageBody,onConfirmHandler);
+            Instance.PopupWindow(ConfirmName, messageTitle,messageBody, true, onConfirmHandler);
         }
 
         public static void Warning(string messageTitle, object messageBody,
             Action<bool> onConfirmHandler)
         {
             Assert.IsNotNull(Instance,"do not have popup instance");
-            Instance.PopupWindow(WarningName, messageTitle, messageBody, onConfirmHandler);
+            Instance.PopupWindow(WarningName, messageTitle, messageBody, true, onConfirmHandler);
         }
 
         public static void Error(string messageTitle, object messageBody,
             Action<bool> onConfirmHandler)
         {
             Assert.IsNotNull(Instance,"do not have popup instance");
-            Instance.PopupWindow(ErrorName, messageTitle, messageBody, onConfirmHandler);
+            Instance.PopupWindow(ErrorName, messageTitle, messageBody, true, onConfirmHandler);
         }
 
     }

@@ -71,7 +71,7 @@ namespace CatLib.Ui
         {
             var ui = UiFactory.Instance.GetUi(UiType.Browser, pageName);
             var page = ui.GetComponent<IPage>();
-            Assert.IsNotNull(page,"Ui is not IPage"+page);
+            Assert.IsNotNull(page,"page not found:"+page);
             return page;
         }
 

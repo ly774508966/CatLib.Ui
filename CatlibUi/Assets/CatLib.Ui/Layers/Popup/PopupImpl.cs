@@ -37,49 +37,62 @@ namespace CatLib.Ui
 
 
         /// <inheritdoc />
-        public void PopupWindow(string windowName, string messageTitle, Action<bool> onConfirmHandler, Action<object> onSelectionHandler = null)
+       
+        public void PopupWindow(string windowName, string messageTitle = null, object messageBody = null, bool isShowMask = true,
+            Action<bool> onConfirmHandler = null, Action<object> onSelectionHandler = null)
         {
-
-            _popupWindow(windowName,messageTitle, null, onConfirmHandler,onSelectionHandler);
+            _popupWindow(windowName,messageTitle,messageBody,isShowMask,onConfirmHandler,onSelectionHandler);
         }
 
-
-        /// <inheritdoc />
-        public void PopupWindow(string windowName,string messageTitle,object messageBody, Action<bool> onConfirmHandler, Action<object> onSelectionHandler = null)
-        {
-            _popupWindow(windowName,messageTitle, messageBody, onConfirmHandler,onSelectionHandler);
-        }
-
-        public void _popupWindow(string windowName, string messageTitle, object messageBody, Action<bool> onConfirmHandler, Action<object> onSelectionHandler = null)
+        public void _popupWindow(string windowName, string messageTitle, object messageBody,bool isShowMask, Action<bool> onConfirmHandler, Action<object> onSelectionHandler = null)
         {
             Assert.IsNull(CurrentPopupWindow, "window existed");
-            Assert.IsNotNull(onConfirmHandler);
-            var window = _showWindow(windowName, messageTitle, null);
+            var window = _showWindow(windowName, messageTitle, messageBody);
             window.RegisterConfirmHandler(x => _onWindowConfirm(x, onConfirmHandler));
             window.RegisterSelectHandler(x => _onWindowSelect(x, onSelectionHandler));
-            _showMask();
+            if(isShowMask) _showMask();
+            CurrentPopupWindow = window;
+        }
+
+
+        public void CloseCurrentWindow()
+        {
+            Assert.IsNotNull(CurrentPopupWindow,"current window is null");
+            CurrentPopupWindow.ClearHandler();
+            CurrentPopupWindow.RectTransform.HideUi();
+            CurrentPopupWindow = null;
+            Mask.gameObject.SetActive(false);
         }
 
 
         private void _onWindowSelect(object selectResult, Action<object> onSelectHandler)
         {
-            Assert.IsNotNull(onSelectHandler,"can't find select handler");
-            _closeWindow();
-            onSelectHandler.Invoke(selectResult);
+            CloseCurrentWindow();
+            if (onSelectHandler == null)
+            {
+                Debug.LogWarning(string.Format("select {0},but can't find select handler",selectResult.GetType().Name));
+            }
+            else
+            {
+                onSelectHandler.Invoke(selectResult);
+            }
 
         }
 
         private void _onWindowConfirm(bool confirmResult, Action<bool> onConfirmHandler)
         {
-            _closeWindow();
-            onConfirmHandler.Invoke(confirmResult);
+            CloseCurrentWindow();
+            if (onConfirmHandler == null)
+            {
+                Debug.LogWarning(string.Format("select {0},but can't find confirm handler", confirmResult));
+            }
+            else
+            {
+                onConfirmHandler.Invoke(confirmResult);
+            }
         }
 
-        private void _closeWindow()
-        {
-            var layer = Layer.Instance.GetLayer(UiType.Popup);
-            layer.HideAllChildren();
-        }
+
 
         private PopupWindow _showWindow(string windowName, string messageTitle, object messageBody)
         {

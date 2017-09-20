@@ -1,11 +1,12 @@
-﻿using UnityEngine.EventSystems;
+﻿using CatLib.Ui.Plugin;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CatLib.Ui
 {
-    public class PopupWindowDefault: PopupWindow
+    public class PopupWindowDefault : PopupWindow
     {
-      
+
         public Button ConfirmTrueButton;
         public Button ConfirmFalseButton;
         public Button[] SelectionButtons;
@@ -14,18 +15,18 @@ namespace CatLib.Ui
 
         void Awake()
         {
-            if(ConfirmTrueButton!=null) ConfirmTrueButton.onClick.AddListener(() =>
+            if (ConfirmTrueButton != null) ConfirmTrueButton.onClick.AddListener(() =>
             {
                 ReportConfirm(true);
             });
-            if(ConfirmFalseButton!=null) ConfirmFalseButton.onClick.AddListener(() =>
+            if (ConfirmFalseButton != null) ConfirmFalseButton.onClick.AddListener(() =>
             {
                 ReportConfirm(false);
             });
 
             foreach (var selectionButton in SelectionButtons)
             {
-                var tmp = selectionButton;  
+                var tmp = selectionButton;
                 selectionButton.onClick.AddListener(() =>
                 {
                     ReportSelect(tmp);
@@ -40,7 +41,13 @@ namespace CatLib.Ui
 
         public override void SetWindowBody(object messageBody)
         {
-            if(BodyText==null) return;
+            var setter = this.GetComponent<IPopupWindowBodySetter>();
+            if (setter != null)
+            {
+                setter.SetBody(messageBody);
+                return;
+            }
+            if (BodyText == null) return;
             if (messageBody == null)
             {
                 BodyText.text = "";

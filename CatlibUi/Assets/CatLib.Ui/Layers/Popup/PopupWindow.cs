@@ -55,12 +55,17 @@ namespace CatLib.Ui
             if (_onConfirmHandler != null) _onConfirmHandler.Invoke(confirmation);
         }
 
+        public void ClearHandler()
+        {
+            _onConfirmHandler = null;
+            _onSelectHandler = null;
+            
+        }
 
         // 弹窗关闭的时候移除事件绑定
         void OnDisable()
         {
-            _onConfirmHandler = null;
-            _onSelectHandler = null;
+            ClearHandler();
         }
 
 

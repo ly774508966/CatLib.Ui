@@ -13,6 +13,8 @@ namespace CatLib.Ui
 
         protected BackgroundConfig[] Configs;
 
+        protected RectTransform CurrentBackground;
+
         public BackgroundImpl(BackgroundConfig[] configs)
         {
             Configs = configs;
@@ -47,14 +49,21 @@ namespace CatLib.Ui
         {
             var layer = Layer.Instance.GetLayer(UiType.Background);
             layer.HideAllChildren();
+            CurrentBackground = null;
         }
 
         private void _showBackground(string bgName)
         {
+            if (CurrentBackground != null)
+            {
+                if(CurrentBackground.name==bgName) return;
+                CurrentBackground.HideUi();
+            }
             var ui = UiFactory.Instance.GetUi(UiType.Background, bgName);
             var layer = Layer.Instance.GetLayer(UiType.Background);
             ui.SetParent(layer);
             ui.ShowUi();
+            CurrentBackground = ui;
         }
     }
 }

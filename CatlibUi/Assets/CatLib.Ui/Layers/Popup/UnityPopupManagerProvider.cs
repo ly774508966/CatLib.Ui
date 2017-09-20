@@ -18,6 +18,8 @@ namespace CatLib.Ui
         public void Init()
         {
             _baseProvider.Init();
+            // 注册popup事件监听
+            new PopupEventListener();
         }
 
         public void Register()

@@ -11,7 +11,7 @@ namespace CatLib.Ui
 
         protected OverlayConfig[] Configs;
 
-        private RectTransform _previousOverlay;
+        private RectTransform _currentOverlay;
 
         public OverlayImpl(OverlayConfig[] configs)
         {
@@ -47,21 +47,22 @@ namespace CatLib.Ui
         {
             var layer = Layer.Instance.GetLayer(UiType.Overlay);
             layer.HideAllChildren();
+            _currentOverlay = null;
         }
 
         private void _showOverlay(string overlayName)
         {
             var ui = UiFactory.Instance.GetUi(UiType.Overlay, overlayName);
             var layer = Layer.Instance.GetLayer(UiType.Overlay);
-            if (_previousOverlay != null)
+            if (_currentOverlay != null)
             {
-                if(_previousOverlay.name==overlayName) return;
-                _previousOverlay.HideUi();
+                if(_currentOverlay.name==overlayName) return;
+                _currentOverlay.HideUi();
             }
 
             ui.SetParent(layer);
             ui.ShowUi();
-            _previousOverlay = ui;
+            _currentOverlay = ui;
         }
     }
 }

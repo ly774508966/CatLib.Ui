@@ -10,7 +10,7 @@ namespace Example.Scripts
 
         void Awake()
         {
-            ButtonSelectable.onClick.AddListener(() => Popup.Instance.PopupWindow("select_popup", "title", "body", _onConfirmHandler,_onSelectHandler));
+            ButtonSelectable.onClick.AddListener(() => Popup.Instance.PopupWindow("select_popup", "title", "body",true, _onConfirmHandler,_onSelectHandler));
         }
 
         private void _onSelectHandler(object obj)

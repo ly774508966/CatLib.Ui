@@ -14,7 +14,7 @@ namespace CatLib.Ui
 
         class GuidMask
         {
-            public Guid Guid;
+            public string Guid;
             public RectTransform Mask;
             public bool MarkAsDelete;
         }
@@ -35,7 +35,6 @@ namespace CatLib.Ui
             DefaultMaskColor = defaultMaskColor;
         }
 
-
         public void Init()
         {
             App.Make<ILayer>().SetLayer(LayerName, LayerIndex);
@@ -47,7 +46,7 @@ namespace CatLib.Ui
             App.Singleton<IMask>((_, __) => this);
         }
 
-        public Guid ShowMask(string maskName, Guid? maskGuid = null)
+        public string ShowMask(string maskName)
         {
 
             RectTransform mask;
@@ -60,7 +59,7 @@ namespace CatLib.Ui
                 mask = DefaultMask;
             }
 
-            var guid = maskGuid==null? Guid.NewGuid():maskGuid.Value;
+            var guid =  Guid.NewGuid().ToString();
             
             var guidMask = new GuidMask{Guid =guid,Mask = mask};
             _guidMaskList.Add(guidMask) ;
@@ -101,9 +100,11 @@ namespace CatLib.Ui
             Logger.Debug(string.Format("{0} masks left",_guidMaskList.Count));
         }
 
-        public void HideMask(Guid maskId)
+        public void HideMask(string maskId)
         {
-            var guidMask = _guidMaskList.Single(x => x.Guid == maskId);
+
+            var guidMask = _guidMaskList.SingleOrDefault(x => x.Guid == maskId);
+            Assert.IsNotNull(guidMask,"can't get mask:"+maskId);
             guidMask.MarkAsDelete = true;
             _refreshMask();
         }

@@ -12,8 +12,8 @@ namespace YourNameSpace.Scripts
         public Button ButtonShowMask1;
         public Button ButtonHideMask1;
 
-        private Guid _mask;
-        private Guid _mask1;
+        private string _mask;
+        private string _mask1;
 
         void Awake()
         {
@@ -26,10 +26,12 @@ namespace YourNameSpace.Scripts
         private void _hideMask1()
         {
             Mask.Instance.HideMask(_mask1);
+            _mask1 = null;
         }
 
         private void _showMask1()
         {
+            if (_mask1 != null) return;
            _mask1=  Mask.Instance.ShowMask("mask1");
         }
 
@@ -37,12 +39,14 @@ namespace YourNameSpace.Scripts
 
         private void _showMask()
         {
+           if (_mask != null) return;
           _mask=  Mask.Instance.ShowMask("anything");
         }
 
         private void _hideMask()
         {
             Mask.Instance.HideMask(_mask);
+            _mask = null;
         }
     }
 }

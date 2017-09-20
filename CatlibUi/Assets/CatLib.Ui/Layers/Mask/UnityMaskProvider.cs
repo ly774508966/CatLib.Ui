@@ -18,6 +18,7 @@ namespace CatLib.Ui
         public void Init()
         {
             _baseProvider.Init();
+            new MaskEventListener();
         }
 
         public void Register()
